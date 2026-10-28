@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Soal Interaktif: Digital Wellbeing</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+                padding-bottom: 0 !important;
+            }
+            .card-shadow {
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+            textarea {
+                border: none !important;
+                resize: none !important;
+                background: transparent !important;
+            }
+        }
+        .print-only {
+            display: none;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen pb-12">
+
+    <!-- Top Navigation / Header -->
+    <header class="bg-gradient-to-r from-teal-700 via-emerald-700 to-indigo-800 text-white shadow-lg no-print sticky top-0 z-30">
+        <div class="max-w-5xl mx-auto px-4 py-4 md:py-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white backdrop-blur-md">
+                            <i data-lucide="video" class="w-3.5 h-3.5"></i> YouTube: RHUbOjmO7nw
+                        </span>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-400/30 text-emerald-100 border border-emerald-300/30">
+                            NLB Singapore Framework
+                        </span>
+                    </div>
+                    <h1 class="text-xl md:text-2xl font-extrabold tracking-tight" id="ui_headerTitle">Media Soal Interaktif: Digital Wellbeing</h1>
+                    <p class="text-teal-100 text-xs md:text-sm mt-0.5" id="ui_headerSub">Kembangkan Kebiasaan Digital yang Sehat & Seimbang dalam Kehidupan Sehari-hari</p>
+                </div>
+
+                <div class="flex items-center gap-3 self-end md:self-center shrink-0">
+                    <!-- Language Switcher Toggle -->
+                    <div class="bg-slate-900/60 p-1 rounded-xl border border-white/20 flex items-center">
+                        <button type="button" onclick="setLanguage('id')" id="langBtn_id" class="px-3 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500 text-white shadow">
+                            🇮🇩 ID
+                        </button>
+                        <button type="button" onclick="setLanguage('en')" id="langBtn_en" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white">
+                            🇬🇧 EN
+                        </button>
+                    </div>
+
+                    <a href="https://www.youtube.com/watch?v=RHUbOjmO7nw" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow transition shrink-0">
+                        <i data-lucide="youtube" class="w-4 h-4"></i> <span id="ui_watchVideo">Tonton Video</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Header specifically for Print Mode -->
+    <div class="print-only max-w-5xl mx-auto p-4 border-b-2 border-slate-900 mb-4">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold uppercase tracking-wide">Laporan Hasil Evaluasi Pembelajaran Interaktif</h1>
+                <p class="text-xs text-slate-600">Materi: Digital Wellbeing (NLB Singapore / NUS CTIC Framework)</p>
+            </div>
+            <div class="text-right text-xs text-slate-500">
+                <p id="printGeneratedDate"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 mt-6">
+
+        <!-- Student Identity Card -->
+        <div class="bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-6 card-shadow">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2 mb-4">
+                <i data-lucide="user-check" class="w-5 h-5 text-teal-600"></i> <span id="ui_studentIdentity">Identitas Peserta Didik</span>
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1" id="ui_nameLabel">Nama Lengkap</label>
+                    <input type="text" id="studentName" oninput="saveUserData(); updateProgress();" placeholder="Masukkan nama..." 
+                           class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1" id="ui_classLabel">Kelas / Kelompok</label>
+                    <input type="text" id="studentClass" oninput="saveUserData()" placeholder="Contoh: X IPA 1..." 
+                           class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1" id="ui_noAbsenLabel">Nomor Absen</label>
+                    <input type="text" id="studentNo" oninput="saveUserData()" placeholder="Contoh: 15..." 
+                           class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1" id="ui_dateLabel">Tanggal Pengerjaan</label>
+                    <input type="date" id="studentDate" oninput="saveUserData()" 
+                           class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 transition">
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions & Progress Bar -->
+        <div class="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-4 mb-6 text-amber-900 text-sm no-print space-y-3">
+            <div class="flex items-start gap-3">
+                <i data-lucide="info" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
+                <div class="flex-1">
+                    <span class="font-bold block" id="ui_instructionsTitle">Petunjuk Pengerjaan:</span>
+                    <ul class="list-disc list-inside mt-1 space-y-0.5 text-xs md:text-sm text-amber-800">
+                        <li id="ui_inst1">Gunakan tombol ID | EN di kanan atas untuk mengubah bahasa kapan saja tanpa menghapus jawaban.</li>
+                        <li id="ui_inst2">Bagian A (10 Pilihan Ganda) & Bagian B (3 Benar/Salah) dikoreksi otomatis oleh sistem (Bobot 70%).</li>
+                        <li id="ui_inst3">Bagian C (2 Uraian Reflektif) dikoreksi manual oleh guru/evaluasi mandiri (Bobot 30%).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Realtime Progress Bar -->
+            <div class="pt-2 border-t border-amber-200/60">
+                <div class="flex items-center justify-between text-xs font-bold mb-1.5 text-amber-900">
+                    <span id="ui_progressText">Progres Pengerjaan Soal:</span>
+                    <span id="progressCountText" class="text-teal-700 bg-teal-100/80 px-2.5 py-0.5 rounded-full border border-teal-300/50">0 dari 15 Soal Terisi</span>
+                </div>
+                <div class="w-full bg-amber-200/60 h-2.5 rounded-full overflow-hidden">
+                    <div id="progressBarFill" class="bg-gradient-to-r from-teal-500 to-emerald-600 h-full w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Form -->
+        <form id="quizForm" onsubmit="event.preventDefault();">
+
+            <!-- BAGIAN A: PILIHAN GANDA -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <h2 class="text-base md:text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-7 h-7 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xs font-extrabold shadow-sm">A</span>
+                        <span id="ui_partATitle">Bagian A: Pilihan Ganda (10 Soal)</span>
+                    </h2>
+                    <span class="text-xs font-semibold px-2.5 py-1 bg-teal-50 text-teal-700 rounded-full border border-teal-200" id="ui_autoGradeBadgeA">Koreksi Otomatis (70%)</span>
+                </div>
+
+                <div id="pgContainer" class="space-y-5">
+                    <!-- PG Questions populated by JS -->
+                </div>
+            </div>
+
+            <!-- BAGIAN B: BENAR / SALAH -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <h2 class="text-base md:text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-7 h-7 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-xs font-extrabold shadow-sm">B</span>
+                        <span id="ui_partBTitle">Bagian B: Benar / Salah (3 Soal)</span>
+                    </h2>
+                    <span class="text-xs font-semibold px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200" id="ui_autoGradeBadgeB">Koreksi Otomatis (70%)</span>
+                </div>
+
+                <div id="tfContainer" class="space-y-5">
+                    <!-- True/False Questions populated by JS -->
+                </div>
+            </div>
+
+            <!-- BAGIAN C: URAIAN REFLEKTIF -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <h2 class="text-base md:text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-7 h-7 bg-purple-600 text-white rounded-lg flex items-center justify-center text-xs font-extrabold shadow-sm">C</span>
+                        <span id="ui_partCTitle">Bagian C: Uraian Reflektif (2 Soal)</span>
+                    </h2>
+                    <span class="text-xs font-semibold px-2.5 py-1 bg-purple-50 text-purple-700 rounded-full border border-purple-200" id="ui_manualGradeBadge">Koreksi Manual (30%)</span>
+                </div>
+
+                <div id="essayContainer" class="space-y-6">
+                    <!-- Essay Questions populated by JS -->
+                </div>
+            </div>
+
+            <!-- Action Buttons Bar -->
+            <div class="no-print flex flex-col sm:flex-row items-center justify-end gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xl sticky bottom-4 z-20">
+                <button type="button" onclick="resetQuiz()" 
+                        class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-semibold text-xs md:text-sm hover:bg-slate-100 transition flex items-center justify-center gap-1.5">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span id="ui_btnReset">Reset Jawaban</span>
+                </button>
+                <button type="button" onclick="submitQuiz()" 
+                        class="w-full sm:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-xs md:text-sm shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
+                    <i data-lucide="check-circle-2" class="w-5 h-5"></i> <span id="ui_btnSubmit">Kirim & Periksa Jawaban</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- RESULT & EVALUATION DASHBOARD -->
+        <div id="resultSection" class="hidden mt-8 space-y-6">
+            
+            <!-- Summary Dashboard Card -->
+            <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden border border-slate-800 card-shadow">
+                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10">
+                    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                        <div>
+                            <span class="px-3 py-1 bg-teal-500/20 text-teal-300 border border-teal-500/30 rounded-full text-xs font-semibold" id="ui_evalHeader">
+                                Hasil Evaluasi Pembelajaran
+                            </span>
+                            <h2 class="text-2xl font-extrabold mt-2.5" id="ui_summaryTitle">Ringkasan Perolehan Nilai</h2>
+                            <p class="text-slate-400 text-xs md:text-sm mt-1" id="resultStudentMeta">Nama Siswa: - | Kelas: -</p>
+                            <div class="mt-2 inline-flex items-center gap-2 px-3 py-1 bg-slate-800/90 rounded-lg text-xs font-medium text-slate-300">
+                                <span id="ui_gradePredicate">Predikat:</span>
+                                <strong id="gradePredicateBadge" class="text-emerald-400 font-bold">-</strong>
+                            </div>
+                        </div>
+
+                        <!-- Score Cards -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full lg:w-auto">
+                            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700 text-center">
+                                <span class="block text-[11px] text-slate-400 font-medium mb-1" id="ui_objScoreLabel">Skor Objektif (A & B)</span>
+                                <span class="text-xl md:text-2xl font-black text-teal-400" id="objectiveScoreText">0 / 70</span>
+                                <span class="block text-[10px] text-slate-500 mt-0.5">(Bobot 70%)</span>
+                            </div>
+                            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700 text-center">
+                                <span class="block text-[11px] text-slate-400 font-medium mb-1" id="ui_essayScoreLabel">Skor Uraian (C)</span>
+                                <span class="text-xl md:text-2xl font-black text-purple-400" id="essayScoreText">0 / 30</span>
+                                <span class="block text-[10px] text-slate-500 mt-0.5">(Bobot 30%)</span>
+                            </div>
+                            <div class="col-span-2 sm:col-span-1 bg-emerald-950/60 p-3.5 rounded-xl border border-emerald-600/40 text-center">
+                                <span class="block text-[11px] text-emerald-200 font-medium mb-1" id="ui_finalScoreLabel">Nilai Akhir Total</span>
+                                <span class="text-2xl md:text-3xl font-black text-emerald-300" id="finalCombinedScoreText">0 / 100</span>
+                                <span class="block text-[10px] text-emerald-400/80 mt-0.5">(Skala 100)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Grading Panel for Teacher / Evaluator -->
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-purple-200 card-shadow">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-purple-100 pb-3 mb-4">
+                    <h3 class="font-bold text-slate-900 text-sm md:text-base flex items-center gap-2">
+                        <i data-lucide="edit-3" class="w-5 h-5 text-purple-600"></i> <span id="ui_manualPanelTitle">Panel Koreksi Manual Soal Uraian (Khusus Guru / Self-Check)</span>
+                    </h3>
+                    <span class="text-xs bg-purple-100 text-purple-800 font-semibold px-2.5 py-1 rounded-full shrink-0">Maksimal: 30 Poin</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 bg-purple-50/50 p-4 rounded-xl border border-purple-100 mb-4">
+                    <!-- Essay 1 Score Control -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-700" id="ui_essay1ScoreLabel">Nilai Uraian 1 (Soal #14) [Maks 15 Poin]:</label>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="scoreEssay1" min="0" max="15" step="0.5" value="0" oninput="calculateCombinedScore()" 
+                                   class="w-24 px-3 py-2 rounded-lg border border-purple-300 text-sm font-bold text-purple-900 bg-white text-center focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <div class="flex items-center gap-1 flex-wrap">
+                                <button type="button" onclick="setEssayScore(1, 0)" class="px-2 py-1 text-xs bg-white border border-slate-300 hover:bg-purple-100 rounded font-semibold text-slate-700">0</button>
+                                <button type="button" onclick="setEssayScore(1, 5)" class="px-2 py-1 text-xs bg-white border border-slate-300 hover:bg-purple-100 rounded font-semibold text-slate-700">5</button>
+                                <button type="button" onclick="setEssayScore(1, 10)" class="px-2 py-1 text-xs bg-white border border-slate-300 hover:bg-purple-100 rounded font-semibold text-slate-700">10</button>
+                                <button type="button" onclick="setEssayScore(1, 15)" class="px-2 py-1 text-xs bg-purple-600 hover:bg-purple-700 text-white rounded font-semibold">15</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Essay 2 Score Control -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-700" id="ui_essay2ScoreLabel">Nilai Uraian 2 (Soal #15) [Maks 15 Poin]:</label>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="scoreEssay2" min="0" max="15" step="0.5" value="0" oninput="calculateCombinedScore()" 
+                                   class="w-24 px-3 py-2 rounded-lg border border-purple-300 text-sm font-bold text-purple-900 bg-white text-center focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <div class="flex items-center gap-1 flex-wrap">
+                                <button type="button" onclick="setEssayScore(2, 0)" class="px-2 py-1 text-xs bg-white border border-slate-300 hover:bg-purple-100 rounded font-semibold text-slate-700">0</button>
+                                <button type="button" onclick="setEssayScore(2, 5)" class="px-2 py-1 text-xs bg-white border border-slate-300 hover:bg-purple-100 rounded font-semibold text-slate-700">5</button>
+                                <button type="button" onclick="setEssayScore(2, 10)" class="px-2 py-1 text-xs bg-white border border-slate-300 hover:bg-purple-100 rounded font-semibold text-slate-700">10</button>
+                                <button type="button" onclick="setEssayScore(2, 15)" class="px-2 py-1 text-xs bg-purple-600 hover:bg-purple-700 text-white rounded font-semibold">15</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teacher Feedback Box -->
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700" id="ui_teacherNoteLabel">Catatan Umpan Balik Guru:</label>
+                    <textarea id="teacherNotes" rows="2" placeholder="Tuliskan umpan balik atau saran untuk siswa..." 
+                              class="w-full p-3 text-xs md:text-sm rounded-xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"></textarea>
+                </div>
+
+                <div class="mt-4 flex flex-col sm:flex-row justify-between items-center gap-3 pt-3 border-t border-slate-100">
+                    <span class="text-[11px] text-slate-500">*Rumus Penilaian Total: (Skor Objektif A & B Dikonversi ke Maks 70) + Nilai Uraian (Maks 30)</span>
+                    <button type="button" onclick="window.print()" class="no-print bg-slate-900 hover:bg-black text-white font-bold text-xs px-5 py-2.5 rounded-xl inline-flex items-center gap-2 transition shadow">
+                        <i data-lucide="printer" class="w-4 h-4"></i> <span id="ui_btnPrint">Cetak Laporan / Simpan PDF</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Print Signature Block (Only visible when printing) -->
+            <div class="print-only mt-12 pt-8 border-t border-slate-300">
+                <div class="grid grid-cols-2 gap-8 text-center text-xs">
+                    <div>
+                        <p class="mb-16" id="ui_sigStudent">Tanda Tangan Siswa</p>
+                        <p class="font-bold border-b border-slate-400 inline-block px-8 pb-1" id="printStudentSignatureName">( ____________________ )</p>
+                    </div>
+                    <div>
+                        <p class="mb-16" id="ui_sigTeacher">Tanda Tangan Guru / Penilai</p>
+                        <p class="font-bold border-b border-slate-400 inline-block px-8 pb-1">( ____________________ )</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Language State (Default: Indonesian)
+        let currentLang = 'id';
+
+        // UI Dictionary for Translations
+        const uiTranslations = {
+            id: {
+                headerTitle: "Media Soal Interaktif: Digital Wellbeing",
+                headerSub: "Kembangkan Kebiasaan Digital yang Sehat & Seimbang dalam Kehidupan Sehari-hari",
+                watchVideo: "Tonton Video",
+                studentIdentity: "Identitas Peserta Didik",
+                nameLabel: "Nama Lengkap",
+                classLabel: "Kelas / Kelompok",
+                noAbsenLabel: "Nomor Absen",
+                dateLabel: "Tanggal Pengerjaan",
+                instructionsTitle: "Petunjuk Pengerjaan:",
+                inst1: "Gunakan tombol ID | EN di kanan atas untuk mengubah bahasa kapan saja tanpa menghapus jawaban.",
+                inst2: "Bagian A (10 Pilihan Ganda) & Bagian B (3 Benar/Salah) dikoreksi otomatis oleh sistem (Bobot 70%).",
+                inst3: "Bagian C (2 Uraian Reflektif) dikoreksi manual oleh guru/evaluasi mandiri (Bobot 30%).",
+                progressText: "Progres Pengerjaan Soal:",
+                answeredCount: "{count} dari 15 Soal Terisi",
+                partATitle: "Bagian A: Pilihan Ganda (10 Soal)",
+                partBTitle: "Bagian B: Benar / Salah (3 Soal)",
+                partCTitle: "Bagian C: Uraian Reflektif (2 Soal)",
+                autoGradeBadgeA: "Koreksi Otomatis (70%)",
+                autoGradeBadgeB: "Koreksi Otomatis (70%)",
+                manualGradeBadge: "Koreksi Manual (30%)",
+                btnReset: "Reset Jawaban",
+                btnSubmit: "Kirim & Periksa Jawaban",
+                trueLabel: "BENAR",
+                falseLabel: "SALAH",
+                refVideo: "Ref Video:",
+                summaryTitle: "Ringkasan Perolehan Nilai",
+                evalHeader: "Hasil Evaluasi Pembelajaran",
+                objScoreLabel: "Skor Objektif (A & B)",
+                essayScoreLabel: "Skor Uraian (C)",
+                finalScoreLabel: "Nilai Akhir Total",
+                manualPanelTitle: "Panel Koreksi Manual Soal Uraian (Khusus Guru / Self-Check)",
+                essay1ScoreLabel: "Nilai Uraian 1 (Soal #14) [Maks 15 Poin]:",
+                essay2ScoreLabel: "Nilai Uraian 2 (Soal #15) [Maks 15 Poin]:",
+                teacherNoteLabel: "Catatan Umpan Balik Guru:",
+                btnPrint: "Cetak Laporan / Simpan PDF",
+                correctText: "Jawaban Tepat!",
+                incorrectText: "Jawaban Kurang Tepat",
+                yourAns: "Jawaban Kamu:",
+                keyAns: "Kunci Jawaban:",
+                unanswered: "Belum dijawab",
+                rubricTitle: "Acuan Koreksi & Indikator Jawaban Ideal:",
+                sigStudent: "Tanda Tangan Siswa",
+                sigTeacher: "Tanda Tangan Guru / Penilai",
+                essayPlaceholder: "Tuliskan penjelasan dan refleksi lengkapmu di sini...",
+                gradePredicate: "Predikat & Kualifikasi:",
+                predExcellent: "Sangat Baik (A)",
+                predGood: "Baik (B)",
+                predSufficient: "Cukup (C)",
+                predNeedsImprovement: "Perlu Bimbingan (D)"
+            },
+            en: {
+                headerTitle: "Interactive Quiz: Digital Wellbeing",
+                headerSub: "Cultivate Healthy & Balanced Digital Habits in Daily Life",
+                watchVideo: "Watch Video",
+                studentIdentity: "Student Identity",
+                nameLabel: "Full Name",
+                classLabel: "Class / Section",
+                noAbsenLabel: "Student ID / Roll No.",
+                dateLabel: "Submission Date",
+                instructionsTitle: "Instructions:",
+                inst1: "Use the ID | EN toggle at top right to switch language anytime without losing answers.",
+                inst2: "Part A (10 Multiple Choice) & Part B (3 True/False) are auto-graded by the system (70% Weight).",
+                inst3: "Part C (2 Reflective Essays) are manually graded by teacher/self-evaluation (30% Weight).",
+                progressText: "Progress:",
+                answeredCount: "{count} of 15 Questions Answered",
+                partATitle: "Part A: Multiple Choice (10 Questions)",
+                partBTitle: "Part B: True / False (3 Questions)",
+                partCTitle: "Part C: Reflective Essay (2 Questions)",
+                autoGradeBadgeA: "Auto-Graded (70%)",
+                autoGradeBadgeB: "Auto-Graded (70%)",
+                manualGradeBadge: "Manually Graded (30%)",
+                btnReset: "Reset Answers",
+                btnSubmit: "Submit & Grade Answers",
+                trueLabel: "TRUE",
+                falseLabel: "FALSE",
+                refVideo: "Video Ref:",
+                summaryTitle: "Grade Summary",
+                evalHeader: "Learning Assessment Result",
+                objScoreLabel: "Objective Score (A & B)",
+                essayScoreLabel: "Essay Score (C)",
+                finalScoreLabel: "Final Total Score",
+                manualPanelTitle: "Manual Essay Grading Panel (Teacher / Self-Check)",
+                essay1ScoreLabel: "Essay 1 Score (Q #14) [Max 15 Pts]:",
+                essay2ScoreLabel: "Essay 2 Score (Q #15) [Max 15 Pts]:",
+                teacherNoteLabel: "Teacher Feedback / Notes:",
+                btnPrint: "Print Report / Save PDF",
+                correctText: "Correct Answer!",
+                incorrectText: "Incorrect Answer",
+                yourAns: "Your Answer:",
+                keyAns: "Correct Answer:",
+                unanswered: "Unanswered",
+                rubricTitle: "Grading Rubric & Ideal Answer Key:",
+                sigStudent: "Student Signature",
+                sigTeacher: "Teacher / Evaluator Signature",
+                essayPlaceholder: "Type your full explanation and reflection here...",
+                gradePredicate: "Predicate & Status:",
+                predExcellent: "Excellent (A)",
+                predGood: "Good (B)",
+                predSufficient: "Satisfactory (C)",
+                predNeedsImprovement: "Needs Improvement (D)"
+            }
+        };
+
+        // Complete 15 Questions Data (Bilingual)
+        const pgData = [
+            {
+                id: 1,
+                time: "00:00:25",
+                question: {
+                    id: "Berapa rata-rata waktu yang dihabiskan seseorang di seluruh dunia secara online setiap harinya menurut materi video?",
+                    en: "According to the video, what is the global average time spent online per day by an individual?"
+                },
+                options: {
+                    id: [
+                        "Lebih dari 4 jam 15 menit",
+                        "Lebih dari 5 jam 50 menit",
+                        "Lebih dari 6 jam 37 menit",
+                        "Lebih dari 8 jam 10 menit"
+                    ],
+                    en: [
+                        "Over 4 hours 15 minutes",
+                        "Over 5 hours 50 minutes",
+                        "Over 6 hours 37 minutes",
+                        "Over 8 hours 10 minutes"
+                    ]
+                },
+                correct: 2,
+                rationale: {
+                    id: "Video menyebutkan secara spesifik bahwa rata-rata orang di dunia menghabiskan lebih dari 6 jam 37 menit secara online setiap hari diserbu notifikasi dan kebisingan digital.",
+                    en: "The video specifically states that globally, the average person spends over 6 hours and 37 minutes online each day bombarded by notifications and digital noise."
+                }
+            },
+            {
+                id: 2,
+                time: "00:01:04",
+                question: {
+                    id: "Apa penyebab utama kelelahan kognitif (cognitive overload) dan perhatian yang terfragmentasi akibat penggunaan gawai?",
+                    en: "What is the primary cause of cognitive overload and fragmented attention resulting from device usage?"
+                },
+                options: {
+                    id: [
+                        "Perangkat digital dirancang memikat perhatian secara terus-menerus melalui notifikasi dan endless scrolling",
+                        "Koneksi internet yang terlalu lambat saat mengunggah dokumen pekerjaan",
+                        "Penggunaan jenis layar berbasis OLED pada smartphone masa kini",
+                        "Aplikasi media sosial membatasi durasi akses harian pengguna"
+                    ],
+                    en: [
+                        "Digital tools are intentionally designed to capture attention continuously through notifications and endless scrolling",
+                        "Internet connection speeds being too slow during document uploads",
+                        "The usage of modern OLED displays in smartphones",
+                        "Social media apps strictly limiting daily access hours"
+                    ]
+                },
+                correct: 0,
+                rationale: {
+                    id: "Perangkat digital dirancang untuk memikat dan menahan perhatian pengguna, memicu endless scrolling dan notifikasi berlebih yang memecah konsentrasi.",
+                    en: "Digital tools are engineered to capture and hold our attention, pulling us into endless scrolling and notifications that fragment focus."
+                }
+            },
+            {
+                id: 3,
+                time: "00:00:45",
+                question: {
+                    id: "Apa fenomena paradoks konektivitas digital yang dijelaskan di dalam video?",
+                    en: "What digital connectivity paradox is highlighted in the video?"
+                },
+                options: {
+                    id: [
+                        "Semakin mahal harga perangkat gawai, semakin sedikit fitur yang tersedia",
+                        "Meskipun kita selalu terhubung (always connected), kita justru bisa merasa semakin terisolasi dan kesepian",
+                        "Penggunaan media sosial selalu meningkatkan kepuasan hidup secara drastis",
+                        "Semakin banyak pengikut di media sosial, semakin sedikit pesan yang masuk"
+                    ],
+                    en: [
+                        "The higher the device cost, the fewer features it provides",
+                        "Despite being constantly connected, we can end up feeling more isolated and lonely",
+                        "Social media usage always dramatically increases overall life satisfaction",
+                        "The more social media followers one has, the fewer messages one receives"
+                    ]
+                },
+                correct: 1,
+                rationale: {
+                    id: "Video menyoroti paradoks bahwa konektivitas serba digital tidak otomatis menjamin hubungan emosional yang erat, malah sering memicu rasa terisolasi.",
+                    en: "The video highlights the paradox that constant digital connectivity does not guarantee emotional closeness, often leaving individuals feeling isolated."
+                }
+            },
+            {
+                id: 4,
+                time: "00:01:25",
+                question: {
+                    id: "Lembaga manakah yang mengembangkan Digital Wellbeing Framework yang dijelaskan dalam video?",
+                    en: "Which institution developed the Digital Wellbeing Framework featured in the video?"
+                },
+                options: {
+                    id: [
+                        "UNESCO Digital Health Division",
+                        "NUS Center for a Trusted Internet and Community (NUS CTIC)",
+                        "World Health Organization (WHO)",
+                        "Harvard Berkman Klein Center"
+                    ],
+                    en: [
+                        "UNESCO Digital Health Division",
+                        "NUS Center for a Trusted Internet and Community (NUS CTIC)",
+                        "World Health Organization (WHO)",
+                        "Harvard Berkman Klein Center"
+                    ]
+                },
+                correct: 1,
+                rationale: {
+                    id: "Framework ini dikembangkan oleh NUS Center for a Trusted Internet and Community untuk membantu masyarakat menavigasi kompleksitas dunia digital.",
+                    en: "This framework was developed by the NUS Center for a Trusted Internet and Community to help navigate digital complexity."
+                }
+            },
+            {
+                id: 5,
+                time: "00:02:55",
+                question: {
+                    id: "Manakah pernyataan yang paling tepat menggambarkan konsep dasar Digital Wellbeing menurut kesimpulan video?",
+                    en: "Which statement best captures the core concept of Digital Wellbeing according to the video summary?"
+                },
+                options: {
+                    id: [
+                        "Menghentikan dan membuang semua akses teknologi digital secara total",
+                        "Menetapkan batasan yang sehat, berinteraksi secara penuh kesadaran (intentional), dan saling mendukung",
+                        "Menggunakan gawai selama mungkin tanpa batas waktu demi mengejar efisiensi",
+                        "Menghindari seluruh jenis interaksi sosial di platform online"
+                    ],
+                    en: [
+                        "Completely eliminating all digital technology access",
+                        "Setting healthy boundaries, engaging intentionally, and supporting each other",
+                        "Using devices as long as possible without time limits for efficiency",
+                        "Avoiding all online social interactions"
+                    ]
+                },
+                correct: 1,
+                rationale: {
+                    id: "Digital wellbeing bukan memutus teknologi secara ekstrem, melainkan tentang membangun batasan sehat dan berinteraksi secara sadar.",
+                    en: "Digital wellbeing is not about total technology elimination; it is about healthy boundaries and intentional engagement."
+                }
+            },
+            {
+                id: 6,
+                time: "00:01:54",
+                question: {
+                    id: "Dalam pilar Digital Consumption (Konsumsi Digital), tindakan bijak apa yang disarankan untuk membantu sesama pengguna?",
+                    en: "In the Digital Consumption pillar, what wise action is recommended to support fellow consumers?"
+                },
+                options: {
+                    id: [
+                        "Membeli barang secara spontan tanpa membaca penjelasan produk",
+                        "Memeriksa ulasan produk dan menulis ulasan yang jujur untuk membantu orang lain bertransaksi dengan bijak",
+                        "Mengunggah ulang semua iklan produk tanpa mengecek kebenarannya",
+                        "Menghapus riwayat transaksi belanja digital secara berkala"
+                    ],
+                    en: [
+                        "Purchasing items spontaneously without reading product details",
+                        "Checking product reviews and writing honest reviews to help others make informed decisions",
+                        "Reposting product advertisements without verifying authenticity",
+                        "Deleting digital shopping history periodically"
+                    ]
+                },
+                correct: 1,
+                rationale: {
+                    id: "Video menekankan pentingnya membuat keputusan terinformasi dengan membaca ulasan serta memberikan umpan balik jujur bagi konsumen lain.",
+                    en: "The video highlights making informed decisions by reading reviews and contributing honest feedback to aid others."
+                }
+            },
+            {
+                id: 7,
+                time: "00:02:05",
+                question: {
+                    id: "Bagaimana teknologi dapat dimanfaatkan secara positif dalam pilar Digital Health (Kesehatan Digital)?",
+                    en: "How can technology be leveraged positively within the Digital Health pillar?"
+                },
+                options: {
+                    id: [
+                        "Mematikan notifikasi pengingat istirahat kerja",
+                        "Menggunakan aplikasi pelacak kebugaran (fitness tracking) dan aplikasi kesadaran penuh (mindfulness)",
+                        "Mendiagnosis penyakit secara mandiri tanpa berkonsultasi ke dokter",
+                        "Menggunakan gawai hingga larut malam sebelum tidur"
+                    ],
+                    en: [
+                        "Disabling break reminder notifications",
+                        "Utilizing fitness tracking apps and mindfulness applications",
+                        "Self-diagnosing illnesses online without consulting medical professionals",
+                        "Using screens late at night before sleep"
+                    ]
+                },
+                correct: 1,
+                rationale: {
+                    id: "Teknologi menjadi alat kesehatan yang baik saat digunakan untuk memantau target kebugaran dan mempraktikkan kesadaran penuh (mindfulness).",
+                    en: "Technology serves health goals when applied for fitness tracking and practicing mindfulness."
+                }
+            },
+            {
+                id: 8,
+                time: "00:02:23",
+                question: {
+                    id: "Manakah contoh penerapan pilar Digital Employment (Pekerjaan/Pendidikan Digital) yang tepat sesuai isi video?",
+                    en: "Which example correctly reflects the Digital Employment pillar as described in the video?"
+                },
+                options: {
+                    id: [
+                        "Menggunakan jam kerja harian hanya untuk bermain gim daring",
+                        "Meningkatkan keterampilan (upskilling) melalui kursus online dan menggunakan alat digital untuk kerja fleksibel & efisien",
+                        "Merespons pesan pekerjaan sepanjang 24 jam tanpa henti",
+                        "Menolak penggunaan sistem komputerisasi di tempat kerja"
+                    ],
+                    en: [
+                        "Using work hours exclusively for online gaming",
+                        "Upskilling through online courses and utilizing digital tools for flexible and efficient work",
+                        "Responding to work messages non-stop 24/7",
+                        "Refusing computerized systems in the workplace"
+                    ]
+                },
+                correct: 1,
+                rationale: {
+                    id: "Pilar pekerjaan/pendidikan digital memfasilitasi upskilling via platform online serta fleksibilitas kerja yang efektif.",
+                    en: "Digital employment facilitates upskilling via online platforms and supports effective, flexible working."
+                }
+            },
+            {
+                id: 9,
+                time: "00:02:31",
+                question: {
+                    id: "Bagaimana platform digital digunakan secara positif dalam pilar Digital Civic Participation (Partisipasi Kewargaan Digital)?",
+                    en: "How can digital platforms be used constructively in Digital Civic Participation?"
+                },
+                options: {
+                    id: [
+                        "Menyebarkan rumor publik yang belum terverifikasi di media sosial",
+                        "Menggunakan media sosial untuk meningkatkan kesadaran isu sosial dan berkolaborasi mencari solusi positif",
+                        "Menghapus akun media sosial agar terhindar dari isu kemasyarakatan",
+                        "Menggunakan identitas palsu untuk mengkritik orang lain secara emosional"
+                    ],
+                    en: [
+                        "Spreading unverified public rumors on social media",
+                        "Using social media to raise awareness for social causes and collaborating toward positive solutions",
+                        "Deleting social media accounts to avoid civic issues",
+                        "Using fake accounts to criticize others emotionally"
+                    ]
+                },
+                correct: 1,
+                rationale: {
+                    id: "Platform digital memungkinkan masyarakat menyuarakan isu kemanusiaan/sosial dan bekerja sama membangun dampak positif.",
+                    en: "Digital platforms empower citizens to advocate for social causes and collaborate on positive community impact."
+                }
+            },
+            {
+                id: 10,
+                time: "00:03:10",
+                question: {
+                    id: "Mengapa tindakan individu dalam menerapkan kebiasaan digital yang sehat dikatakan memiliki efek riak (ripple effect)?",
+                    en: "Why is an individual's adoption of healthy digital habits said to create a ripple effect?"
+                },
+                options: {
+                    id: [
+                        "Karena tindakan tersebut secara otomatis menghemat kuota internet pengguna lain",
+                        "Karena tindakan positif kita tidak hanya memberdayakan diri sendiri tetapi juga menginspirasi orang-orang di sekitar kita",
+                        "Karena frekuensi gawai memengaruhi kecepatan jaringan Wi-Fi sekitar",
+                        "Karena hal tersebut merupakan syarat wajib dalam hukum penggunaan internet"
+                    ],
+                    en: [
+                        "Because it automatically saves internet data for other users",
+                        "Because our positive actions empower not just ourselves but inspire those around us",
+                        "Because device frequency directly alters local Wi-Fi speeds",
+                        "Because it is a legally mandatory requirement for internet use"
+                    ]
+                },
+                correct: 1,
+                rationale: {
+                    id: "Tindakan positif kita berdampak luas, menginspirasi keluarga dan teman untuk bersama-sama menjalani kehidupan digital yang seimbang.",
+                    en: "Our positive actions create wider impact, inspiring family and friends to lead balanced digital lives."
+                }
+            }
+        ];
+
+        const tfData = [
+            {
+                id: 11,
+                time: "00:02:55",
+                question: {
+                    id: "Digital wellbeing mewajibkan pengguna untuk menghentikan secara total penggunaan seluruh perangkat digital dan media sosial.",
+                    en: "Digital wellbeing demands that users completely discontinue all use of digital devices and social media."
+                },
+                correct: "Salah", // In EN: "Salah" matches "False" logic
+                correctEn: "False",
+                rationale: {
+                    id: "SALAH. Digital wellbeing tidak menuntut penghentian total teknologi, melainkan kendali diri dan penetapan batasan yang sehat.",
+                    en: "FALSE. Digital wellbeing does not demand quitting tech entirely, but exercising self-control and setting healthy boundaries."
+                }
+            },
+            {
+                id: 12,
+                time: "00:02:00",
+                question: {
+                    id: "Berpartisipasi aktif dalam komunitas online yang positif merupakan salah satu bentuk penerapan pilar Digital Social Relations.",
+                    en: "Actively participating in positive online communities is a valid application of the Digital Social Relations pillar."
+                },
+                correct: "Benar",
+                correctEn: "True",
+                rationale: {
+                    id: "BENAR. Komunitas online yang sehat dapat memfasilitasi hubungan sosial yang bermakna dan saling mendukung.",
+                    en: "TRUE. Healthy online communities can foster meaningful social connections and mutual support."
+                }
+            },
+            {
+                id: 13,
+                time: "00:00:50",
+                question: {
+                    id: "Kebisingan digital (digital noise) dan notifikasi berlebih hanya mempengaruhi stamina fisik, serta tidak memiliki dampak pada kesehatan mental seseorang.",
+                    en: "Digital noise and excessive notifications only affect physical stamina and have no impact on mental health."
+                },
+                correct: "Salah",
+                correctEn: "False",
+                rationale: {
+                    id: "SALAH. Notifikasi berlebih dan beban digital terbukti memicu stres, kelelahan kognitif (cognitive overload), dan mengganggu produktivitas.",
+                    en: "FALSE. Constant notifications and digital overload are proven contributors to stress, cognitive fatigue, and disrupted productivity."
+                }
+            }
+        ];
+
+        const essayData = [
+            {
+                id: 14,
+                question: {
+                    id: "Berdasarkan video, Digital Wellbeing didefinisikan sebagai upaya menjaga keseimbangan dalam memanfaatkan teknologi.\n\na) Penjelasan Konsep: Jelaskan dengan kata-katamu sendiri apa yang dimaksud dengan Digital Wellbeing dan mengapa kita perlu menetapkan batasan (setting boundaries) saat menggunakan gawai!\nb) Refleksi Diri: Analisis kebiasaan penggunaan gawaimu sehari-hari. Berapa perkiraan waktu layar (screen time) harianmu, aplikasi apa yang paling banyak menyita waktumu, dan sebutkan DUA (2) dampak negatif (seperti sulit fokus, sering menunda tugas, atau mata lelah) yang paling sering kamu rasakan!",
+                    en: "Based on the video, Digital Wellbeing is defined as maintaining balance while using technology.\n\na) Concept Explanation: Explain in your own words what Digital Wellbeing means and why setting boundaries with devices is essential!\nb) Self-Reflection: Analyze your daily device usage. What is your estimated daily screen time, which apps consume most of your attention, and identify TWO (2) negative impacts (e.g., lack of focus, procrastination, eye strain) you experience most often?"
+                },
+                rubric: {
+                    id: "INDIKATOR PENILAIAN (Skor Maksimal: 15 Poin):\n- Konsep & Batasan (Maks 7.5 Poin): Siswa menjelaskan Digital Wellbeing sebagai kesadaran/keseimbangan (bukan membuang teknologi) dan pentingnya batasan agar tidak mengalami kelelahan mental/distraksi.\n- Refleksi Diri & Dampak (Maks 7.5 Poin): Siswa menyebutkan angka screen time konkret (misal: 6 jam/hari), sebutkan aplikasi spesifik, serta secara jujur mengidentifikasi 2 dampak negatif pribadi.",
+                    en: "ASSESSMENT RUBRIC (Maximum Score: 15 Points):\n- Concept & Boundaries (Max 7.5 Pts): Student defines Digital Wellbeing as intentional balance (not tech elimination) and highlights the necessity of boundaries against burnout/distraction.\n- Self-Reflection & Impacts (Max 7.5 Pts): Student explicitly states screen time hours, names specific apps, and honestly identifies 2 personal negative impacts."
+                }
+            },
+            {
+                id: 15,
+                question: {
+                    id: "Kerangka Kerja Digital Wellbeing dari NUS CTIC mencakup 5 pilar: Digital Consumption, Digital Social Relations, Digital Health, Digital Employment, dan Digital Civic Participation.\n\nPilihlah DUA (2) pilar yang menurutmu paling perlu kamu perbaiki saat ini. Untuk setiap pilar yang dipilih:\na) Sebutkan contoh praktik baik dari video yang sesuai dengan pilar tersebut!\nb) Susun SATU (1) rencana aksi nyata yang konkret dan dapat kamu jalankan selama 1 minggu ke depan untuk meningkatkan kualitas Digital Wellbeing-mu!",
+                    en: "The NUS CTIC Digital Wellbeing Framework encompasses 5 pillars: Digital Consumption, Digital Social Relations, Digital Health, Digital Employment, and Digital Civic Participation.\n\nSelect TWO (2) pillars that you need to improve most right now. For each selected pillar:\na) Mention a good practice example from the video relevant to that pillar!\nb) Outline ONE (1) concrete action plan that you can execute over the next week to enhance your Digital Wellbeing!"
+                },
+                rubric: {
+                    id: "INDIKATOR PENILAIAN (Skor Maksimal: 15 Poin):\n- Pemahaman Pilar & Contoh Video (Maks 7.5 Poin): Mengidentifikasi 2 pilar dengan tepat dan menghubungkannya dengan contoh konkret dari isi video (seperti memakai app kebugaran, membaca ulasan, atau upskilling).\n- Rencana Aksi Konkret (Maks 7.5 Poin): Merumuskan langkah nyata yang terukur (misal: 'Memasang batas waktu Instagram 45 menit/hari', 'Menaruh HP di luar kamar saat tidur', atau 'Mengaktifkan mode Do Not Disturb saat belajar').",
+                    en: "ASSESSMENT RUBRIC (Maximum Score: 15 Points):\n- Pillar Understanding & Video Context (Max 7.5 Pts): Correctly identifies 2 pillars and references relevant examples from the video (e.g., mindfulness apps, writing honest reviews, online courses).\n- Actionable Plan (Max 7.5 Pts): Formulates measurable action steps (e.g., 'Setting a 45-min app limit for Instagram', 'Keeping phone outside bedroom at night', or 'Enabling Do Not Disturb during study sessions')."
+                }
+            }
+        ];
+
+        // Store User Answers locally to preserve them across language toggles
+        const userState = {
+            pg: {},
+            tf: {},
+            essay: {},
+            submitted: false,
+            essay1Score: 0,
+            essay2Score: 0
+        };
+
+        // Initialize App
+        document.addEventListener("DOMContentLoaded", () => {
+            // Set default date to today
+            document.getElementById("studentDate").valueAsDate = new Date();
+            document.getElementById("printGeneratedDate").innerText = "Dicetak pada: " + new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            renderAll();
+        });
+
+        // Set Language Function
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // Toggle Button Styles
+            const btnId = document.getElementById("langBtn_id");
+            const btnEn = document.getElementById("langBtn_en");
+
+            if (lang === 'id') {
+                btnId.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500 text-white shadow";
+                btnEn.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white";
+            } else {
+                btnEn.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500 text-white shadow";
+                btnId.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white";
+            }
+
+            renderAll();
+        }
+
+        // Render All UI Elements & Questions based on active language
+        function renderAll() {
+            const t = uiTranslations[currentLang];
+
+            // 1. Update Static UI Elements
+            document.getElementById("ui_headerTitle").innerText = t.headerTitle;
+            document.getElementById("ui_headerSub").innerText = t.headerSub;
+            document.getElementById("ui_watchVideo").innerText = t.watchVideo;
+            document.getElementById("ui_studentIdentity").innerText = t.studentIdentity;
+            document.getElementById("ui_nameLabel").innerText = t.nameLabel;
+            document.getElementById("ui_classLabel").innerText = t.classLabel;
+            document.getElementById("ui_noAbsenLabel").innerText = t.noAbsenLabel;
+            document.getElementById("ui_dateLabel").innerText = t.dateLabel;
+            document.getElementById("ui_instructionsTitle").innerText = t.instructionsTitle;
+            document.getElementById("ui_inst1").innerText = t.inst1;
+            document.getElementById("ui_inst2").innerText = t.inst2;
+            document.getElementById("ui_inst3").innerText = t.inst3;
+            document.getElementById("ui_progressText").innerText = t.progressText;
+            document.getElementById("ui_partATitle").innerText = t.partATitle;
+            document.getElementById("ui_partBTitle").innerText = t.partBTitle;
+            document.getElementById("ui_partCTitle").innerText = t.partCTitle;
+            document.getElementById("ui_autoGradeBadgeA").innerText = t.autoGradeBadgeA;
+            document.getElementById("ui_autoGradeBadgeB").innerText = t.autoGradeBadgeB;
+            document.getElementById("ui_manualGradeBadge").innerText = t.manualGradeBadge;
+            document.getElementById("ui_btnReset").innerText = t.btnReset;
+            document.getElementById("ui_btnSubmit").innerText = t.btnSubmit;
+
+            // Summary UI
+            document.getElementById("ui_evalHeader").innerText = t.evalHeader;
+            document.getElementById("ui_summaryTitle").innerText = t.summaryTitle;
+            document.getElementById("ui_objScoreLabel").innerText = t.objScoreLabel;
+            document.getElementById("ui_essayScoreLabel").innerText = t.essayScoreLabel;
+            document.getElementById("ui_finalScoreLabel").innerText = t.finalScoreLabel;
+            document.getElementById("ui_manualPanelTitle").innerText = t.manualPanelTitle;
+            document.getElementById("ui_essay1ScoreLabel").innerText = t.essay1ScoreLabel;
+            document.getElementById("ui_essay2ScoreLabel").innerText = t.essay2ScoreLabel;
+            document.getElementById("ui_teacherNoteLabel").innerText = t.teacherNoteLabel;
+            document.getElementById("ui_btnPrint").innerText = t.btnPrint;
+            document.getElementById("ui_sigStudent").innerText = t.sigStudent;
+            document.getElementById("ui_sigTeacher").innerText = t.sigTeacher;
+            document.getElementById("ui_gradePredicate").innerText = t.gradePredicate;
+
+            // 2. Render Questions
+            renderPG();
+            renderTF();
+            renderEssay();
+
+            // 3. Re-evaluate feedback if already submitted
+            if (userState.submitted) {
+                submitQuiz(true); // silent re-grade to refresh text language
+            }
+
+            updateProgress();
+            lucide.createIcons();
+        }
+
+        // Render Multiple Choice Questions
+        function renderPG() {
+            const container = document.getElementById("pgContainer");
+            const t = uiTranslations[currentLang];
+
+            container.innerHTML = pgData.map((q, idx) => {
+                const questionText = q.question[currentLang];
+                const options = q.options[currentLang];
+                const userChoice = userState.pg[q.id];
+
+                return `
+                    <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-200 shadow-sm card-shadow" id="card-pg-${q.id}">
+                        <div class="flex items-start justify-between gap-3 mb-2.5">
+                            <span class="text-xs font-bold px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg">Soal ${idx + 1} / 10</span>
+                            <span class="text-xs text-slate-400 flex items-center gap-1 font-medium"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t.refVideo} ${q.time}</span>
+                        </div>
+                        <p class="font-semibold text-slate-800 text-sm md:text-base mb-3.5 leading-relaxed">${questionText}</p>
+                        <div class="space-y-2">
+                            ${options.map((opt, optIdx) => {
+                                const checked = userChoice === optIdx ? 'checked' : '';
+                                return `
+                                    <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-teal-50/60 hover:border-teal-200 cursor-pointer transition text-xs md:text-sm text-slate-700">
+                                        <input type="radio" name="pg_${q.id}" value="${optIdx}" ${checked} 
+                                               onchange="savePGAnswer(${q.id}, ${optIdx})" 
+                                               class="w-4 h-4 text-teal-600 focus:ring-teal-500 border-slate-300 mt-0.5 shrink-0">
+                                        <span class="leading-normal"><strong class="text-slate-500 mr-1">${String.fromCharCode(65 + optIdx)}.</strong> ${opt}</span>
+                                    </label>
+                                `;
+                            }).join('')}
+                        </div>
+                        <div id="feedback-pg-${q.id}" class="hidden mt-3.5 p-3.5 rounded-xl text-xs md:text-sm"></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render True/False Questions
+        function renderTF() {
+            const container = document.getElementById("tfContainer");
+            const t = uiTranslations[currentLang];
+
+            container.innerHTML = tfData.map((q, idx) => {
+                const questionText = q.question[currentLang];
+                const userChoice = userState.tf[q.id];
+
+                const trueChecked = userChoice === 'Benar' || userChoice === 'True' ? 'checked' : '';
+                const falseChecked = userChoice === 'Salah' || userChoice === 'False' ? 'checked' : '';
+
+                return `
+                    <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-200 shadow-sm card-shadow" id="card-tf-${q.id}">
+                        <div class="flex items-start justify-between gap-3 mb-2.5">
+                            <span class="text-xs font-bold px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-lg">Benar / Salah ${idx + 1}</span>
+                            <span class="text-xs text-slate-400 flex items-center gap-1 font-medium"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t.refVideo} ${q.time}</span>
+                        </div>
+                        <p class="font-semibold text-slate-800 text-sm md:text-base mb-3.5 leading-relaxed">"${questionText}"</p>
+                        <div class="flex gap-3">
+                            <label class="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border border-slate-200 hover:bg-emerald-50 hover:border-emerald-300 cursor-pointer transition text-xs md:text-sm font-bold text-slate-700">
+                                <input type="radio" name="tf_${q.id}" value="Benar" ${trueChecked} 
+                                       onchange="saveTFAnswer(${q.id}, 'Benar')" 
+                                       class="w-4 h-4 text-emerald-600 focus:ring-emerald-500">
+                                <span>${t.trueLabel}</span>
+                            </label>
+                            <label class="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border border-slate-200 hover:bg-rose-50 hover:border-rose-300 cursor-pointer transition text-xs md:text-sm font-bold text-slate-700">
+                                <input type="radio" name="tf_${q.id}" value="Salah" ${falseChecked} 
+                                       onchange="saveTFAnswer(${q.id}, 'Salah')" 
+                                       class="w-4 h-4 text-rose-600 focus:ring-rose-500">
+                                <span>${t.falseLabel}</span>
+                            </label>
+                        </div>
+                        <div id="feedback-tf-${q.id}" class="hidden mt-3.5 p-3.5 rounded-xl text-xs md:text-sm"></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Reflective Essay Questions
+        function renderEssay() {
+            const container = document.getElementById("essayContainer");
+            const t = uiTranslations[currentLang];
+
+            container.innerHTML = essayData.map((q, idx) => {
+                const questionText = q.question[currentLang];
+                const rubricText = q.rubric[currentLang];
+                const savedVal = userState.essay[q.id] || '';
+
+                return `
+                    <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-200 shadow-sm card-shadow">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-xs font-bold px-2.5 py-1 bg-purple-50 text-purple-700 rounded-lg">Soal Uraian ${idx + 1}</span>
+                            <span class="text-xs text-slate-400 font-medium">Refleksi Diri & Framework</span>
+                        </div>
+                        <p class="font-semibold text-slate-800 text-sm md:text-base mb-3.5 whitespace-pre-line leading-relaxed">${questionText}</p>
+                        <textarea id="essay_ans_${q.id}" rows="5" placeholder="${t.essayPlaceholder}" 
+                                  oninput="saveEssayAnswer(${q.id}, this.value)" 
+                                  class="w-full p-3.5 text-xs md:text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition leading-relaxed">${savedVal}</textarea>
+                        
+                        <div id="rubric_box_${q.id}" class="${userState.submitted ? '' : 'hidden'} mt-4 bg-purple-50/80 border border-purple-200 rounded-xl p-4 text-xs text-purple-950">
+                            <strong class="block font-bold text-purple-900 mb-1 flex items-center gap-1.5 text-xs">
+                                <i data-lucide="bookmark" class="w-4 h-4 text-purple-600"></i> ${t.rubricTitle}
+                            </strong>
+                            <p class="whitespace-pre-line leading-relaxed text-slate-700 mt-1">${rubricText}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Save State Handlers
+        function savePGAnswer(qId, value) {
+            userState.pg[qId] = value;
+            updateProgress();
+        }
+
+        function saveTFAnswer(qId, value) {
+            userState.tf[qId] = value;
+            updateProgress();
+        }
+
+        function saveEssayAnswer(qId, value) {
+            userState.essay[qId] = value;
+            updateProgress();
+        }
+
+        function saveUserData() {
+            const name = document.getElementById("studentName").value;
+            document.getElementById("printStudentSignatureName").innerText = name ? `( ${name} )` : "( ____________________ )";
+        }
+
+        // Progress Counter
+        function updateProgress() {
+            let filledCount = 0;
+            const total = pgData.length + tfData.length + essayData.length; // 10 + 3 + 2 = 15
+
+            pgData.forEach(q => { if (userState.pg[q.id] !== undefined) filledCount++; });
+            tfData.forEach(q => { if (userState.tf[q.id] !== undefined) filledCount++; });
+            essayData.forEach(q => { if (userState.essay[q.id] && userState.essay[q.id].trim().length > 0) filledCount++; });
+
+            const percentage = Math.round((filledCount / total) * 100);
+            document.getElementById("progressBarFill").style.width = `${percentage}%`;
+
+            const t = uiTranslations[currentLang];
+            document.getElementById("progressCountText").innerText = t.answeredCount.replace('{count}', filledCount);
+        }
+
+        let currentObjPoints = 0;
+
+        // Submit & Grade Quiz
+        function submitQuiz(isSilentRefilters = false) {
+            userState.submitted = true;
+            const t = uiTranslations[currentLang];
+            let correctCount = 0;
+            const totalObjItems = pgData.length + tfData.length; // 13 items
+
+            // 1. Check Multiple Choice
+            pgData.forEach(q => {
+                const userChoice = userState.pg[q.id];
+                const feedbackEl = document.getElementById(`feedback-pg-${q.id}`);
+                if (!feedbackEl) return;
+
+                feedbackEl.classList.remove("hidden", "bg-emerald-50", "text-emerald-950", "border-emerald-200", "bg-rose-50", "text-rose-950", "border-rose-200");
+
+                const isCorrect = userChoice === q.correct;
+                if (isCorrect) correctCount++;
+
+                const statusTitle = isCorrect ? t.correctText : t.incorrectText;
+                const badgeColor = isCorrect ? 'bg-emerald-50 text-emerald-950 border-emerald-200' : 'bg-rose-50 text-rose-950 border-rose-200';
+                const icon = isCorrect ? '<i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>' : '<i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i>';
+
+                const userText = userChoice !== undefined ? q.options[currentLang][userChoice] : `<em>${t.unanswered}</em>`;
+                const keyText = q.options[currentLang][q.correct];
+
+                feedbackEl.classList.add(...badgeColor.split(' '), "border");
+                feedbackEl.innerHTML = `
+                    <div class="font-bold flex items-center gap-1.5 mb-1">${icon} ${statusTitle}</div>
+                    <div>${t.yourAns} <strong>${userText}</strong></div>
+                    ${!isCorrect ? `<div>${t.keyAns} <strong class="text-emerald-700">${keyText}</strong></div>` : ''}
+                    <div class="mt-1.5 pt-1.5 border-t border-slate-200/60 text-slate-700">${q.rationale[currentLang]}</div>
+                `;
+            });
+
+            // 2. Check True/False
+            tfData.forEach(q => {
+                const userChoice = userState.tf[q.id];
+                const feedbackEl = document.getElementById(`feedback-tf-${q.id}`);
+                if (!feedbackEl) return;
+
+                feedbackEl.classList.remove("hidden", "bg-emerald-50", "text-emerald-950", "border-emerald-200", "bg-rose-50", "text-rose-950", "border-rose-200");
+
+                const isCorrect = userChoice === q.correct || userChoice === 'Benar' && q.correct === 'Benar' || userChoice === 'Salah' && q.correct === 'Salah';
+                if (isCorrect) correctCount++;
+
+                const statusTitle = isCorrect ? t.correctText : t.incorrectText;
+                const badgeColor = isCorrect ? 'bg-emerald-50 text-emerald-950 border-emerald-200' : 'bg-rose-50 text-rose-950 border-rose-200';
+                const icon = isCorrect ? '<i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>' : '<i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i>';
+
+                const displayUserChoice = userChoice ? (userChoice === 'Benar' ? t.trueLabel : t.falseLabel) : `<em>${t.unanswered}</em>`;
+                const displayKey = q.correct === 'Benar' ? t.trueLabel : t.falseLabel;
+
+                feedbackEl.classList.add(...badgeColor.split(' '), "border");
+                feedbackEl.innerHTML = `
+                    <div class="font-bold flex items-center gap-1.5 mb-1">${icon} ${statusTitle}</div>
+                    <div>${t.yourAns} <strong>${displayUserChoice}</strong> | ${t.keyAns} <strong>${displayKey}</strong></div>
+                    <div class="mt-1.5 pt-1.5 border-t border-slate-200/60 text-slate-700">${q.rationale[currentLang]}</div>
+                `;
+            });
+
+            // 3. Show Rubrics for Essays
+            essayData.forEach(q => {
+                const rubricEl = document.getElementById(`rubric_box_${q.id}`);
+                if (rubricEl) rubricEl.classList.remove("hidden");
+            });
+
+            // Calculate Objective Points (Scaled out of 70)
+            currentObjPoints = Math.round((correctCount / totalObjItems) * 70 * 10) / 10;
+
+            // Display Results Dashboard
+            document.getElementById("resultSection").classList.remove("hidden");
+            document.getElementById("objectiveScoreText").innerText = `${currentObjPoints} / 70`;
+
+            const name = document.getElementById("studentName").value || "Siswa";
+            const sClass = document.getElementById("studentClass").value || "-";
+            const sNo = document.getElementById("studentNo").value || "-";
+            document.getElementById("resultStudentMeta").innerText = `${t.studentIdentity}: ${name} | ${t.classLabel}: ${sClass} | ${t.noAbsenLabel}: ${sNo}`;
+
+            calculateCombinedScore();
+            lucide.createIcons();
+
+            if (!isSilentRefilters) {
+                document.getElementById("resultSection").scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Set Quick Preset Score for Essay
+        function setEssayScore(essayNum, score) {
+            if (essayNum === 1) {
+                document.getElementById("scoreEssay1").value = score;
+            } else {
+                document.getElementById("scoreEssay2").value = score;
+            }
+            calculateCombinedScore();
+        }
+
+        // Calculate Final Total Score (Objective + Essay)
+        function calculateCombinedScore() {
+            const t = uiTranslations[currentLang];
+            const essay1 = parseFloat(document.getElementById("scoreEssay1").value) || 0;
+            const essay2 = parseFloat(document.getElementById("scoreEssay2").value) || 0;
+
+            const totalEssay = Math.min(30, Math.max(0, essay1 + essay2));
+            userState.essay1Score = essay1;
+            userState.essay2Score = essay2;
+
+            document.getElementById("essayScoreText").innerText = `${totalEssay} / 30`;
+
+            const finalTotal = Math.round((currentObjPoints + totalEssay) * 10) / 10;
+            document.getElementById("finalCombinedScoreText").innerText = `${finalTotal} / 100`;
+
+            // Predicate Logic
+            const badge = document.getElementById("gradePredicateBadge");
+            if (finalTotal >= 85) {
+                badge.innerText = t.predExcellent;
+                badge.className = "text-emerald-400 font-bold";
+            } else if (finalTotal >= 70) {
+                badge.innerText = t.predGood;
+                badge.className = "text-teal-400 font-bold";
+            } else if (finalTotal >= 55) {
+                badge.innerText = t.predSufficient;
+                badge.className = "text-amber-400 font-bold";
+            } else {
+                badge.innerText = t.predNeedsImprovement;
+                badge.className = "text-rose-400 font-bold";
+            }
+        }
+
+        // Reset All Answers
+        function resetQuiz() {
+            if (confirm("Apakah Anda yakin ingin mengosongkan semua jawaban? / Are you sure you want to reset all answers?")) {
+                document.getElementById("quizForm").reset();
+                userState.pg = {};
+                userState.tf = {};
+                userState.essay = {};
+                userState.submitted = false;
+
+                // Hide Feedback boxes
+                pgData.forEach(q => {
+                    const el = document.getElementById(`feedback-pg-${q.id}`);
+                    if (el) el.classList.add("hidden");
+                });
+                tfData.forEach(q => {
+                    const el = document.getElementById(`feedback-tf-${q.id}`);
+                    if (el) el.classList.add("hidden");
+                });
+                essayData.forEach(q => {
+                    const el = document.getElementById(`rubric_box_${q.id}`);
+                    if (el) el.classList.add("hidden");
+                });
+
+                document.getElementById("resultSection").classList.add("hidden");
+                updateProgress();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
